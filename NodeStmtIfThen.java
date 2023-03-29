@@ -1,16 +1,16 @@
 public class NodeStmtIfThen extends NodeStmt {
 
-    private NodeBoolexpr boolexpr;
+    private NodeBoolExpr boolexpr;
 	private NodeStmt thenStmt;
 	private NodeStmt elseStmt;
 
-	public NodeStmtIfThen(NodeBoolexpr boolexpr, NodeStmt ts) {
+	public NodeStmtIfThen(NodeBoolExpr boolexpr, NodeStmt ts) {
 		this.boolexpr = boolexpr;
 		thenStmt = ts;
 		elseStmt = null;
 	}
 
-	public NodeStmtIfThen(NodeBoolexpr boolexpr, NodeStmt ts, NodeStmt es) {
+	public NodeStmtIfThen(NodeBoolExpr boolexpr, NodeStmt ts, NodeStmt es) {
 		this.boolexpr = boolexpr;
 		thenStmt = ts;
 		elseStmt = es;

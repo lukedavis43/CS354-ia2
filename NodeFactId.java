@@ -8,12 +8,6 @@ public class NodeFactId extends NodeFact {
 		this.id=id;
 	}
 
-	public NodeFactId(int pos, String id) {
-        this.pos=pos;
-        this.id=id;
-        //this.negative = negative;
-    }
-
 	public double eval(Environment env) throws EvalException {
 		//return negative != null ? -1*env.get(pos,id) : env.get(pos, id);
 		return env.get(pos,id);

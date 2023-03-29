@@ -7,11 +7,6 @@ public class NodeFactNum extends NodeFact {
 		this.num=num;
 	}
 
-	public NodeFactNum(String num) {
-        this.num=num;
-        //this.negative = negative;
-    }
-
 	public double eval(Environment env) throws EvalException {
 		//return negative != null ? -1*Double.parseDouble(num) : Double.parseDouble(num);
 		return Double.parseDouble(num);

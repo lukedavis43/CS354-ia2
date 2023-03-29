@@ -1,9 +1,9 @@
 public class NodeStmtWhile extends NodeStmt {
 
-    private NodeBoolexpr boolexpr;
+    private NodeBoolExpr boolexpr;
 	private NodeStmt stmt;
 
-	public NodeStmtWhile(NodeBoolexpr cond, NodeStmt st) {
+	public NodeStmtWhile(NodeBoolExpr cond, NodeStmt st) {
 		boolexpr = cond;
 		stmt = st;
 	}
