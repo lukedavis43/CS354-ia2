@@ -26,10 +26,11 @@ public class Environment {
     }
 
     public double get(int pos, String var) throws EvalException {
-        if(variables.get(var) == null) {
+        Double val = variables.get(var);
+        if(val == null) {
             throw new EvalException(pos, "Undefined variable: " + var);
         } else {
-            return (double)variables.get(var);
+            return val;
         }
     }
 

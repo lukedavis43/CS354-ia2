@@ -22,38 +22,32 @@ public class Parser {
 
 	//Parse multiplication operators
     private NodeRelop parseRelop() throws SyntaxException {
-		String symbol = "<";
-		if (curr().equals(new Token(symbol))) {
-			match(symbol);
-			return new NodeRelop(pos(),symbol);
+		if (curr().equals(new Token("<"))) {
+			match("<");
+			return new NodeRelop(pos(), "<");
 		}
-		symbol = "<=";
-		if (curr().equals(new Token(symbol))) {
-			match(symbol);
-			return new NodeRelop(pos(),symbol);
+		if (curr().equals(new Token("<="))) {
+			match("<=");
+			return new NodeRelop(pos(), "<=");
 		}
-		symbol = ">";
-		if (curr().equals(new Token(symbol))) {
-			match(symbol);
-			return new NodeRelop(pos(),symbol);
+		if (curr().equals(new Token(">"))) {
+			match(">");
+			return new NodeRelop(pos(), ">");
 		}
-		symbol = ">=";
-		if (curr().equals(new Token(symbol))) {
-			match(symbol);
-			return new NodeRelop(pos(),symbol);
+		if (curr().equals(new Token(">="))) {
+			match(">=");
+			return new NodeRelop(pos(), ">=");
 		}
-		symbol = "<>";
-		if (curr().equals(new Token(symbol))) {
-			match(symbol);
-			return new NodeRelop(pos(),symbol);
+		if (curr().equals(new Token("<>"))) {
+			match("<>");
+			return new NodeRelop(pos(), "<>");
 		}
-		symbol = "==";
-		if (curr().equals(new Token(symbol))) {
-			match(symbol);
-			return new NodeRelop(pos(),symbol);
+		if (curr().equals(new Token("=="))) {
+			match("==");
+			return new NodeRelop(pos(), "==");
 		}
 		return null;
-    }
+	}
 
 	private NodeMulop parseMulop() throws SyntaxException {
 		if (curr().equals(new Token("*"))) {
@@ -104,26 +98,26 @@ public class Parser {
 
 
 	private NodeFact parseFact() throws SyntaxException {
-		//Check if there's a negative
-		NodeUnary negative = parseUnary();
-
 		if (curr().equals(new Token("("))) {
 			match("(");
-			NodeExpr expr=parseExpr();
+			NodeExpr expr = parseExpr();
 			match(")");
-			//Create a new expression within the () and recurse
-			return new NodeFactExpr(expr, negative);
+			return new NodeFactExpr(expr);
 		}
 		if (curr().equals(new Token("id"))) {
-			Token id=curr();
+			Token id = curr();
 			match("id");
-			//Create a new NodeFact that will obtain the value of an id later at evaluation time
-			return new NodeFactId(pos(),id.lex(), negative);
+			return new NodeFactId(pos(), id.lex());
 		}
-		Token num=curr();
+		if (curr().equals(new Token("-"))) { // my attempt at shoehorning a
+												
+			match("-");
+			NodeFact fact = parseFact();
+			return new NodeFactNeg(fact);
+		}
+		Token num = curr();
 		match("num");
-		//Return a number
-		return new NodeFactNum(num.lex(), negative);
+		return new NodeFactNum(num.lex());
 	}
 
 	private NodeTerm parseTerm() throws SyntaxException {
@@ -162,12 +156,13 @@ public class Parser {
 	}
 
 	private NodeBoolExpr parseBoolExpr() throws SyntaxException {
-		//First part of boolExpr is the left expr
-		NodeExpr expr1 = parseExpr();
+		NodeExpr o1 = parseExpr();
 		NodeRelop relop = parseRelop();
-		NodeExpr expr2 = parseExpr();
-		return new NodeBoolExpr(expr1, relop, expr2);
-    }
+		NodeExpr o2 = parseExpr();
+
+		NodeBoolexpr boolexpr = new NodeBoolexpr(o1, relop, o2);
+		return boolexpr;
+	}
 
 	private NodeStmt parseStmt() throws SyntaxException {
 		//Parses assignment

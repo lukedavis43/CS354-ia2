@@ -1,6 +1,6 @@
 public class NodeStmtWr extends NodeStmt {
 
-    NodeExpr expr;
+    private NodeExpr expr;
 
     public NodeStmtWr(NodeExpr expr) {
         this.expr = expr;

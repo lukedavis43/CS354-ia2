@@ -11,15 +11,12 @@ public class Main {
 		Environment env=new Environment();
 		for (String stmt: args)
 			try {
-				double value = parser.parse(stmt).eval(env);
-				if(!Double.isNaN(value)){
-				System.out.println(value);
-			}
+				System.out.println(parser.parse(stmt).eval(env));
 	    	} catch (SyntaxException e) {
 				System.err.println(e);
-			} catch (Exception e) {
+	    	} catch (EvalException e) {
 				System.err.println(e);
-			}
-	}
+	    	}
+		}
 
 }

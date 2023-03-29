@@ -13,7 +13,7 @@ public class NodeStmtWhile extends NodeStmt {
 	    while(bexpr.eval(env) == 7.0){
             stmt.eval(env);
         }
-        return 0;
+        return 0.0;
     }
 
 }
