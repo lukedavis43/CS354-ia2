@@ -9,16 +9,17 @@ public class Main {
 	public static void main(String[] args) {
 		Parser parser=new Parser();
 		Environment env=new Environment();
-		String code="";
 		for (String stmt: args)
 			try {
-			System.out.println(parser.parse(stmt).eval(env));
-	    	} catch (SyntaxException e) {
-			System.err.println(e);
-			} catch (Exception e) {
-			System.err.println(e);
+				double value = parser.parse(stmt).eval(env);
+				if(!Double.isNaN(value)){
+				System.out.println(value);
 			}
-		new Code(code,env);
+	    	} catch (SyntaxException e) {
+				System.err.println(e);
+			} catch (Exception e) {
+				System.err.println(e);
+			}
 	}
 
 }

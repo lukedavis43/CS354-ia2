@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
+
 // This class provides a stubbed-out environment.
 // You are expected to implement the methods.
 // Accessing an undefined variable should throw an exception.
@@ -18,8 +19,6 @@ import java.util.Map;
 public class Environment {
 
     private Map<String, Double> variables = new HashMap<String, Double>();
-
-    private String[] map = { "x" };
 
     public double put(String var, double val) {
         variables.put(var, val);

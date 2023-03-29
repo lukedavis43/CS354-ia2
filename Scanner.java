@@ -22,6 +22,7 @@ public class Scanner {
 	private Set<String> operators=new HashSet<String>();
 	// set for comments
 	private Set<String> comments = new HashSet<String>();
+	private Set<String> relops = new HashSet<String>();
 
 	// initializers for previous sets
 
@@ -72,6 +73,24 @@ public class Scanner {
 	}
 
 	private void initKeywords(Set<String> s) {
+		s.add("if");
+		s.add("then");
+		s.add("else");
+		s.add("while");
+		s.add("do");
+		s.add("begin");
+		s.add("end");
+		s.add("rd");
+		s.add("wr");
+	}
+
+	private void initRelops(Set<String> s){
+		s.add("<");
+		s.add("<=");
+		s.add(">");
+		s.add(">=");
+		s.add("<>");
+		s.add("==");
 	}
 
 	// constructor:
@@ -88,6 +107,7 @@ public class Scanner {
 		initKeywords(keywords);
 		initOperators(operators);
 		initComments(comments);
+		initRelops(relops);
 	}
 
 	// handy string-processing methods
@@ -118,6 +138,12 @@ public class Scanner {
 	}
 
 	// scan various kinds of lexeme
+
+	private void nextNumber() {
+	int old=pos;
+	many(digits);
+	token=new Token("num",program.substring(old,pos));
+    }
 
 	/**
      * Looking to see if our next string will be a comment or not
@@ -167,6 +193,27 @@ public class Scanner {
 		token=new Token(lexeme); // one-char operator
 	}
 
+	private void nextRelop() {
+		int old=pos;
+		pos=old+2;
+		//Have to check 2 char first because the 1 char variant of 2 char relops are still valid
+		if (!done()) {
+			String lexeme=program.substring(old,pos);
+			if (relops.contains(lexeme)) {
+			token=new Token(lexeme); // two-char operator
+			return;
+			}
+		}
+		pos=old+1;
+		String lexeme=program.substring(old,pos);
+		token=new Token(lexeme); // one-char operator
+    }
+
+	private void nextBlock(){
+		int old = pos;
+		pos = old + "begin".length();
+	}
+
 	// This method determines the kind of the next token (e.g., "id"),
 	// and calls a method to scan that token's lexeme (e.g., "foo").
 	public boolean next() {
@@ -182,6 +229,8 @@ public class Scanner {
 			nextKwId();
 		else if (operators.contains(c))
 			nextOp();
+		else if (relops.contains(c))
+			nextRelop();
 		else {
 			System.err.println("illegal character at position "+pos);
 			pos++;
