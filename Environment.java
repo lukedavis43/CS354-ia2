@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class Environment {
 
-    private Map<String, Double> variables = new HashMap<String, Double>();
+    private HashMap<String, Double> variables = new HashMap<String, Double>();
 
     public double put(String var, double val) {
         variables.put(var, val);
