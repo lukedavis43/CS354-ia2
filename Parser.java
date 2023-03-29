@@ -89,7 +89,7 @@ public class Parser {
 		// Parse a series of minus signs and flip the sign for each one
 		while (curr().equals(new Token("-"))) {
 			match("-");
-			x *= 1;
+			x *= -1;
 		}
 	
 		// If the number of negations is odd, create a new NodeUnary object with a value of "-"

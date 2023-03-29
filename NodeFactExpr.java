@@ -16,6 +16,4 @@ public class NodeFactExpr extends NodeFact {
 		return negative != null ? -1*expr.eval(env) : expr.eval(env);
 	}
 
-	public String code() { return "("+expr.code()+")"; }
-
 }

@@ -25,8 +25,4 @@ public class NodeTerm extends Node {
 			: mulop.op(term.eval(env),fact.eval(env));
 	}
 
-	public String code() {
-		return (term==null ? "" : term.code()+mulop.code())+fact.code();
-	}
-
 }

@@ -11,6 +11,4 @@ public abstract class Node {
 		throw new EvalException(pos,"cannot eval() node!");
 	}
 
-	public String code() { return ""; }
-
 }

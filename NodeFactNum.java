@@ -16,6 +16,4 @@ public class NodeFactNum extends NodeFact {
 		return negative != null ? -1*Double.parseDouble(num) : Double.parseDouble(num);
 	}
 
-	public String code() { return num; }
-
 }

@@ -18,6 +18,4 @@ public class NodeFactId extends NodeFact {
 		return negative != null ? -1*env.get(pos,id) : env.get(pos, id);
 	}
 
-	public String code() { return id; }
-
 }
