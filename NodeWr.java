@@ -16,11 +16,4 @@ public class NodeWr extends Node {
 		return d;
 	}
 
-	public String code() {
-		return "printf(\"%g\\n\","
-			+"(double)("
-			+expr.code()
-			+"));";
-	}
-
 }
