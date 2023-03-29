@@ -4,7 +4,7 @@
  * 
  * @author austinplatt
  */
-
+import java.io.InputStream;
 import java.util.*;
 
 public class Scanner {
@@ -150,24 +150,17 @@ public class Scanner {
      */
 	private void nextComment() {
 		int old=pos;
-		//takes first 2 characters to see if it is comment
-		pos = old + 2; 
-		many(comments);
-		String lexeme;
-    	lexeme=program.substring(old,pos);
-    	//comment ("//")
-		if (lexeme.matches("//")) { 
-    		while(!done()) { 
-    			lexeme=program.substring(old,pos);
-    			pos++;
-    		}
-    		lexeme=program.substring(old,pos);
+		pos=old+2;
+		while(!comments.contains(program.substring(pos, pos+2))){
+			pos++;
 		}
-		if (done()) {
-    		token = new Token("comment");
-    	} else {
-    		next();
-    	}
+		
+		if(!done()){
+			if(comments.contains(program.substring(pos, pos+2))){
+				pos = pos + 2;
+			}
+			next();
+		}
 	}
 
 	private void nextKwId() {
