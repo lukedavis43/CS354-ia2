@@ -2,6 +2,7 @@
 // modeled after the programming language's grammar.
 // It constructs and has-a Scanner for the program
 // being parsed.
+import java.util.*;
 
 public class Parser {
 
@@ -147,17 +148,6 @@ public class Parser {
 	}
 
 	private NodeAssn parseAssn() throws SyntaxException {
-		NodeTerm term=parseTerm();
-		//Then parse an add operator
-		NodeAddop addop=parseAddop();
-		if (addop==null)
-	    	return new NodeExpr(term,null,null);
-		NodeExpr expr=parseExpr();
-		expr.append(new NodeExpr(term,addop,null));
-		return expr;
-	}
-
-	private NodeBoolExpr parseBoolExpr() throws SyntaxException {
 		//First part of assignment is the id
 		Token id=curr();
 		//Make sure the token we just got is an id
@@ -169,6 +159,14 @@ public class Parser {
 		//Assign the expression to the id and return the new object
 		NodeAssn assn=new NodeAssn(id.lex(),expr);
 		return assn;
+	}
+
+	private NodeBoolExpr parseBoolExpr() throws SyntaxException {
+		//First part of boolExpr is the left expr
+		NodeExpr expr1 = parseExpr();
+		NodeRelop relop = parseRelop();
+		NodeExpr expr2 = parseExpr();
+		return new NodeBoolExpr(expr1, relop, expr2);
     }
 
 	private NodeStmt parseStmt() throws SyntaxException {
