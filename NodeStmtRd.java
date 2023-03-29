@@ -7,7 +7,7 @@ public class NodeStmtRd extends NodeStmt {
     }
 
     public double eval(Environment env) throws EvalException {
-	    java.util.Scanner userInput = new java.util.Scanner(System.in);
+	    java.util.Scanner in = new java.util.Scanner(System.in);
         System.out.print("Please enter a value for " + id + ": ");
         id=in.next();
 		in.close();
