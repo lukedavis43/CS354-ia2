@@ -113,7 +113,7 @@ public class Parser {
 												
 			match("-");
 			NodeFact fact = parseFact();
-			return new NodeFactNeg(fact);
+			return new NodeFactNegative(fact);
 		}
 		Token num = curr();
 		match("num");
@@ -160,7 +160,7 @@ public class Parser {
 		NodeRelop relop = parseRelop();
 		NodeExpr o2 = parseExpr();
 
-		NodeBoolexpr boolexpr = new NodeBoolexpr(o1, relop, o2);
+		NodeBoolExpr boolexpr = new NodeBoolExpr(o1, relop, o2);
 		return boolexpr;
 	}
 
@@ -182,7 +182,7 @@ public class Parser {
     	
     	if (curr().equals(new Token("if"))) {
     		match("if");
-    		NodeBoolexpr boolexpr = parseBoolexpr();
+    		NodeBoolExpr boolexpr = parseBoolExpr();
     		match("then");
     		NodeStmt tStmt = parseStmt();
     		if (curr().equals(new Token("else"))) {
@@ -197,7 +197,7 @@ public class Parser {
     	
     	if (curr().equals(new Token("while"))) {
     		match("while");
-    		NodeBoolexpr boolexpr = parseBoolexpr();
+    		NodeBoolExpr boolexpr = parseBoolExpr();
     		match("do");
     		NodeStmt stmt = parseStmt();
     		NodeStmtWhile stmtWhile = new NodeStmtWhile(boolexpr, stmt);

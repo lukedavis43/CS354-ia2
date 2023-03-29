@@ -1,3 +1,3 @@
-public class NodeStmt extends Node {
+public abstract class NodeStmt extends Node {
 
 }
