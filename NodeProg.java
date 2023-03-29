@@ -2,8 +2,8 @@ public class NodeProg extends Node {
 
     private NodeBlock block;
 
-    public NodeProg(NodeBlock block) {
-        this.block = block;
+    public NodeProg(NodeBlock b) {
+        block = b;
     }
 
     public double eval(Environment env) throws EvalException {

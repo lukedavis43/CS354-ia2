@@ -76,24 +76,24 @@ public class Parser {
 	// If successful, it returns a new NodeUnary object with a value of "-" if the number 
 	// of negations encountered is odd. If no negations are encountered, it returns null.
 
-	private NodeUnary parseUnary() throws SyntaxException {
+	//private NodeUnary parseUnary() throws SyntaxException {
 		// Initialize a counter to keep track of the number of negations encountered
-		int x = 1;
+	//	int x = 1;
 	
 		// Parse a series of minus signs and flip the sign for each one
-		while (curr().equals(new Token("-"))) {
-			match("-");
-			x *= -1;
-		}
+	//	while (curr().equals(new Token("-"))) {
+	//		match("-");
+	//		x *= -1;
+	//	}
 	
 		// If the number of negations is odd, create a new NodeUnary object with a value of "-"
-		if (x == -1) {
-			return new NodeUnary("-");
-		}
+	//	if (x == -1) {
+	//		return new NodeUnary("-");
+	//	}
 	
 		// Otherwise, return null
-		return null;
-	}
+	//	return null;
+	//}
 
 
 
@@ -165,85 +165,78 @@ public class Parser {
 	}
 
 	private NodeStmt parseStmt() throws SyntaxException {
-		//Parses assignment
-		NodeStmt stmt;
-		
-		switch(curr().lex()){
-			case "if":
-				match("if");
-				NodeBoolExpr ifExpr = parseBoolExpr();
-				match("then");
-				NodeStmt stmtIf = parseStmt();
-				//Optional else
-				if(curr().lex().equals("else")){
-					match("else");
-					NodeStmt stmtElse = parseStmt();
-					stmt = new NodeStmtIfElse(ifExpr, stmtIf, stmtElse);
-				}
-				else{
-					stmt = new NodeStmtIf(ifExpr, stmtIf);
-				}
-				break;
-			case "while":
-				match("while");
-				NodeBoolExpr whileExpr = parseBoolExpr();
-				match("do");
-				NodeStmt stmtWhile = parseStmt();
-				stmt = new NodeStmtWhile(whileExpr, stmtWhile);
-				break;
-			case "rd":
-				match("rd");
-				Token id = curr();
-				match("id");
-				stmt = new NodeStmtRd(id.lex());
-				break;
-			case "wr":
-				match("wr");
-				NodeExpr expr = parseExpr();
-				stmt = new NodeStmtWr(expr);
-				break;
-			case "begin":
-				match("begin");
-				stmt = parseBlock();
-				match("end");
-
-				break;
-			default:
-				NodeAssn assn = parseAssn();
-				stmt = new NodeStmtAssn(assn);
-				break;
+		if (curr().equals(new Token("rd"))) {
+			match("rd");
+			Token id = curr();
+			
+			NodeStmtRd stmtRd = new NodeStmtRd(id.lex());
+			return stmtRd;
 		}
-		return stmt;
+		
+    	if (curr().equals(new Token("wr"))) {
+    		match("wr");
+    		NodeExpr expr = parseExpr();
+    		NodeStmtWr stmtWr = new NodeStmtWr(expr);
+    		return stmtWr;
+    	}
+    	
+    	if (curr().equals(new Token("if"))) {
+    		match("if");
+    		NodeBoolexpr boolexpr = parseBoolexpr();
+    		match("then");
+    		NodeStmt tStmt = parseStmt();
+    		if (curr().equals(new Token("else"))) {
+    			match("else");
+    			NodeStmt fStmt = parseStmt();
+    			NodeStmtIfThen stmtIf = new NodeStmtIfThen(boolexpr, tStmt, fStmt);
+    			return stmtIf;
+    		}
+    		NodeStmtIfThen stmtIf = new NodeStmtIfThen(boolexpr, tStmt);
+    		return stmtIf;
+    	}
+    	
+    	if (curr().equals(new Token("while"))) {
+    		match("while");
+    		NodeBoolexpr boolexpr = parseBoolexpr();
+    		match("do");
+    		NodeStmt stmt = parseStmt();
+    		NodeStmtWhile stmtWhile = new NodeStmtWhile(boolexpr, stmt);
+    		return stmtWhile;
+    	}
+    	
+    	if (curr().equals(new Token("begin"))) {
+    		match("begin");
+    		NodeBlock block = parseBlock();
+    		match("end");
+    		NodeStmtBlock stmtBlock = new NodeStmtBlock(block);
+    		return stmtBlock;
+    	}
+
+    	NodeAssn assn = parseAssn();
+    	NodeStmtAssn stmtAssn = new NodeStmtAssn(assn);
+		return stmtAssn;
 	}
 
 	public NodeBlock parseBlock() throws SyntaxException
 	{
-		List<NodeStmt> statements = new ArrayList<NodeStmt>();
-		NodeStmt statement;
-		//Keep reading until it doesn't find anything
-		while(true)
-		{
-			
-			statement = parseStmt();
-			statements.add(statement);
-
-			if(curr().equals(new Token(";"))){
-				//Expects semi after each statement
-				match(";");
-			}
-			else{
-				break;
-			}
+		NodeStmt stmt = parseStmt();
+		NodeBlock nextBlock = null;
+		
+		if (curr().equals(new Token(";"))) {
+			match(";");
+			nextBlock = parseBlock();
 		}
-		return new NodeBlock(statements);
+
+		NodeBlock block = new NodeBlock(stmt, nextBlock);
+		return block;
 	}
 
 	public Node parse(String program) throws SyntaxException {
-		scanner=new Scanner(program);
+		if (program.contains("#")) { // comment parsing
+			program = program.substring(0, program.indexOf("#"));
+		}
+		scanner = new Scanner(program);
 		scanner.next();
-		//Starts parsing statement
-		NodeBlock block=parseBlock();
-		match("EOF");
-		return block;
+		return parseBlock();
 	}
 }

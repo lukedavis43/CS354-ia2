@@ -1,5 +1,4 @@
 import java.util.HashMap;
-import java.util.Map;
 
 // This class provides a stubbed-out environment.
 // You are expected to implement the methods.

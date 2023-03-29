@@ -4,7 +4,6 @@
  * 
  * @author austinplatt
  */
-import java.io.InputStream;
 import java.util.*;
 
 public class Scanner {
@@ -21,8 +20,8 @@ public class Scanner {
 	private Set<String> keywords=new HashSet<String>();
 	private Set<String> operators=new HashSet<String>();
 	// set for comments
-	private Set<String> comments = new HashSet<String>();
-	private Set<String> relops = new HashSet<String>();
+	//private Set<String> comments = new HashSet<String>();
+	//private Set<String> relops = new HashSet<String>();
 
 	// initializers for previous sets
 
@@ -60,6 +59,12 @@ public class Scanner {
 		s.add("(");
 		s.add(")");
 		s.add(";");
+		s.add("<");
+    	s.add("<=");
+    	s.add(">");
+    	s.add(">=");
+    	s.add("<>");
+    	s.add("==");
 	}
  
 	/**
@@ -68,9 +73,9 @@ public class Scanner {
      * 
      * @param s - set string holding our comment characters
      */
-	private void initComments(Set<String> s) {
-		s.add("//");
-	}
+	//private void initComments(Set<String> s) {
+	//	s.add("//");
+	//}
 
 	private void initKeywords(Set<String> s) {
 		s.add("if");
@@ -82,15 +87,6 @@ public class Scanner {
 		s.add("end");
 		s.add("rd");
 		s.add("wr");
-	}
-
-	private void initRelops(Set<String> s){
-		s.add("<");
-		s.add("<=");
-		s.add(">");
-		s.add(">=");
-		s.add("<>");
-		s.add("==");
 	}
 
 	// constructor:
@@ -106,8 +102,8 @@ public class Scanner {
 		initLegits(legits);
 		initKeywords(keywords);
 		initOperators(operators);
-		initComments(comments);
-		initRelops(relops);
+		//initComments(comments);
+		//initRelops(relops);
 	}
 
 	// handy string-processing methods
@@ -140,28 +136,28 @@ public class Scanner {
 	// scan various kinds of lexeme
 
 	private void nextNumber() {
-	int old=pos;
-	many(digits);
-	token=new Token("num",program.substring(old,pos));
+		int old=pos;
+		many(digits);
+		token=new Token("num",program.substring(old,pos));
     }
 
 	/**
      * Looking to see if our next string will be a comment or not
      */
-	private void nextComment() {
-		int old=pos;
-		pos=old+2;
-		while(!comments.contains(program.substring(pos, pos+2))){
-			pos++;
-		}
+	//private void nextComment() {
+	//	int old=pos;
+	//	pos=old+2;
+	//	while(!comments.contains(program.substring(pos, pos+2))){
+	//		pos++;
+	//	}
 		
-		if(!done()){
-			if(comments.contains(program.substring(pos, pos+2))){
-				pos = pos + 2;
-			}
-			next();
-		}
-	}
+	//	if(!done()){
+	//		if(comments.contains(program.substring(pos, pos+2))){
+	//			pos = pos + 2;
+	//		}
+	//		next();
+	//	}
+	//}
 
 	private void nextKwId() {
 		int old=pos;
@@ -186,51 +182,47 @@ public class Scanner {
 		token=new Token(lexeme); // one-char operator
 	}
 
-	private void nextRelop() {
-		int old=pos;
-		pos=old+2;
-		//Have to check 2 char first because the 1 char variant of 2 char relops are still valid
-		if (!done()) {
-			String lexeme=program.substring(old,pos);
-			if (relops.contains(lexeme)) {
-			token=new Token(lexeme); // two-char operator
-			return;
-			}
-		}
-		pos=old+1;
-		String lexeme=program.substring(old,pos);
-		token=new Token(lexeme); // one-char operator
-    }
+	//private void nextRelop() {
+	//	int old=pos;
+	//	pos=old+2;
+	//	//Have to check 2 char first because the 1 char variant of 2 char relops are still valid
+	//	if (!done()) {
+	//		String lexeme=program.substring(old,pos);
+	//		if (relops.contains(lexeme)) {
+	//		token=new Token(lexeme); // two-char operator
+	//		return;
+	//		}
+	//	}
+	//	pos=old+1;
+	//	String lexeme=program.substring(old,pos);
+	//	token=new Token(lexeme); // one-char operator
+    //}
 
-	private void nextBlock(){
-		int old = pos;
-		pos = old + "begin".length();
-	}
+	//private void nextBlock(){
+	//	int old = pos;
+	//	pos = old + "begin".length();
+	//} 
 
 	// This method determines the kind of the next token (e.g., "id"),
 	// and calls a method to scan that token's lexeme (e.g., "foo").
 	public boolean next() {
+		if (done())
+	    return false;
 		many(whitespace);
-		if (done()) {
-			token=new Token("EOF");
-			return false;
-		}
 		String c=program.charAt(pos)+"";
 		if (digits.contains(c))
-			nextNumber();
+	 		nextNumber();
 		else if (letters.contains(c))
-			nextKwId();
+	    	nextKwId();
 		else if (operators.contains(c))
-			nextOp();
-		else if (relops.contains(c))
-			nextRelop();
+	    	nextOp();
 		else {
-			System.err.println("illegal character at position "+pos);
-			pos++;
-			return next();
+	    	System.err.println("illegal character at position "+pos);
+	    	pos++;
+	    	return next();
 		}
 		return true;
-	}
+    }
 
 	// This method scans the next lexeme,
 	// if the current token is the expected token.

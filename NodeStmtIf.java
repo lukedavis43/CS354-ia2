@@ -4,7 +4,7 @@ public class NodeStmtIf extends NodeStmt {
     private NodeStmt stmt;
 
     public NodeStmtIf(NodeBoolExpr bexpr, NodeStmt stmt) {
-	    this.bexpr=bexpr;
+	    this.bexpr = bexpr;
         this.stmt = stmt;
     }
 

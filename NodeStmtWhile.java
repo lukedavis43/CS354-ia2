@@ -1,19 +1,28 @@
 public class NodeStmtWhile extends NodeStmt {
 
-    private NodeBoolExpr bexpr;
-    private NodeStmt stmt;
+    private NodeBoolexpr boolexpr;
+	private NodeStmt stmt;
 
-    public NodeStmtWhile(NodeBoolExpr bexpr, NodeStmt stmt) {
-	    this.bexpr=bexpr;
-        this.stmt = stmt;
-    }
+	public NodeStmtWhile(NodeBoolexpr cond, NodeStmt st) {
+		boolexpr = cond;
+		stmt = st;
+	}
 
-    public double eval(Environment env) throws EvalException {
-        //Only valuate the code if the bexpr returns "true" which is 7
-	    while(bexpr.eval(env) == 7.0){
-            stmt.eval(env);
-        }
-        return 0.0;
-    }
+	/**
+	 * Evaluates the boolean expression, and if it returns true, the statement
+	 * will be evaluated. This process will repeat until the boolean expression
+	 * returns false.
+	 * 
+	 * @param env
+	 *            (Environment)
+	 * @throws EvalException
+	 */
+	public double eval(Environment env) throws EvalException {
+		while (boolexpr.eval(env) == 1.0) {
+			stmt.eval(env);
+		}
+
+		return 0.0;
+	}
 
 }
