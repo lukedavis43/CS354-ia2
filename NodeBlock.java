@@ -1,4 +1,4 @@
-public class NodeBlock extends NodeStmt {
+public class NodeBlock extends Node {
 
     private NodeStmt stmt;
 	private NodeBlock block;

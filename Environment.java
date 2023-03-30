@@ -28,19 +28,8 @@ public class Environment {
         Double val = variables.get(var);
         if(val == null) {
             throw new EvalException(pos, "Undefined variable: " + var);
-        } else {
-            return val;
-        }
-    }
-
-    public String toC() {
-        String s = "";
-        String sep = " ";
-        for (String v : map) {
-            s += sep + v;
-            sep = ",";
-        }
-        return s == "" ? "" : "int" + s + ";\nx=0;x=x;\n";
+        } 
+         return val;
     }
 
 }
