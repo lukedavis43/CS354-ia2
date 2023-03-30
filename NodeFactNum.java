@@ -12,6 +12,4 @@ public class NodeFactNum extends NodeFact {
 		return Double.parseDouble(num);
 	}
 
-	public String code() { return num; }
-
 }

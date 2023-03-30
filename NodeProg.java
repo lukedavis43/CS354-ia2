@@ -1,4 +1,4 @@
-public class NodeProg extends Node {
+public class NodeProg {
 
     private NodeBlock block;
 
