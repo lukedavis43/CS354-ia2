@@ -9,7 +9,7 @@ public class Main {
 	public static void main(String[] args) {
 		Parser parser=new Parser();
 		Environment env=new Environment();
-		for (String stmt: args)
+		for (String stmt: args) {
 			try {
 				System.out.println(parser.parse(stmt).eval(env));
 	    	} catch (SyntaxException e) {
@@ -18,5 +18,5 @@ public class Main {
 				System.err.println(e);
 	    	}
 		}
-
+	}
 }
