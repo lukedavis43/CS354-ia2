@@ -12,4 +12,7 @@ public class NodeAssn extends Node {
 		return env.put(id,expr.eval(env));
 	}
 
+	public String code() {
+		return id + "=" + expr.code() + ";" + new NodeWr(expr).code();
+	}
 }

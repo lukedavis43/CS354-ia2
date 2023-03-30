@@ -15,4 +15,5 @@ public class NodeAddop extends Node {
 		throw new EvalException(pos,"bogus addop: "+addop);
 	}
 
+	public String code() { return addop; }
 }

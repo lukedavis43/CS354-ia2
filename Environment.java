@@ -33,4 +33,14 @@ public class Environment {
         }
     }
 
+    public String toC() {
+        String s = "";
+        String sep = " ";
+        for (String v : map) {
+            s += sep + v;
+            sep = ",";
+        }
+        return s == "" ? "" : "int" + s + ";\nx=0;x=x;\n";
+    }
+
 }

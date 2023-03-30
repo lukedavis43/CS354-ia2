@@ -1,7 +1,7 @@
 import java.io.*;
 
 /* Austin Platt */
-/* */
+/* */ //
 public class Code {
 
 	private final String[] prologue={

@@ -25,4 +25,8 @@ public class NodeExpr extends Node {
 			: addop.op(expr.eval(env),term.eval(env));
 	}
 
+	public String code() {
+		return (expr==null ? "" : expr.code()+addop.code())+term.code();
+	}
+
 }

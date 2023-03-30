@@ -13,4 +13,6 @@ public class NodeFactId extends NodeFact {
 		return env.get(pos,id);
 	}
 
+	public String code() { return id; }
+
 }
