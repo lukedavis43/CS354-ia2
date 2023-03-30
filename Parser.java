@@ -20,8 +20,7 @@ public class Parser {
 		return scanner.pos();
 	}
 
-	//Parse multiplication operators
-    private NodeRelop parseRelop() throws SyntaxException {
+	private NodeRelop parseRelop() throws SyntaxException {
 		if (curr().equals(new Token("<"))) {
 			match("<");
 			return new NodeRelop(pos(), "<");
@@ -72,30 +71,15 @@ public class Parser {
 		}
 		return null;
 	}
-	// This function attempts to parse a unary value from the current input token.
-	// If successful, it returns a new NodeUnary object with a value of "-" if the number 
-	// of negations encountered is odd. If no negations are encountered, it returns null.
 
-	//private NodeUnary parseUnary() throws SyntaxException {
-		// Initialize a counter to keep track of the number of negations encountered
-	//	int x = 1;
-	
-		// Parse a series of minus signs and flip the sign for each one
-	//	while (curr().equals(new Token("-"))) {
-	//		match("-");
-	//		x *= -1;
-	//	}
-	
-		// If the number of negations is odd, create a new NodeUnary object with a value of "-"
-	//	if (x == -1) {
-	//		return new NodeUnary("-");
-	//	}
-	
-		// Otherwise, return null
-	//	return null;
-	//}
+	private NodeBoolexpr parseBoolexpr() throws SyntaxException {
+		NodeExpr o1 = parseExpr();
+		NodeRelop relop = parseRelop();
+		NodeExpr o2 = parseExpr();
 
-
+		NodeBoolexpr boolexpr = new NodeBoolexpr(o1, relop, o2);
+		return boolexpr;
+	}
 
 	private NodeFact parseFact() throws SyntaxException {
 		if (curr().equals(new Token("("))) {
@@ -110,10 +94,10 @@ public class Parser {
 			return new NodeFactId(pos(), id.lex());
 		}
 		if (curr().equals(new Token("-"))) { // my attempt at shoehorning a
-												
+												// unary minus -KC
 			match("-");
 			NodeFact fact = parseFact();
-			return new NodeFactNegative(fact);
+			return new NodeFactNeg(fact);
 		}
 		Token num = curr();
 		match("num");
@@ -121,13 +105,12 @@ public class Parser {
 	}
 
 	private NodeTerm parseTerm() throws SyntaxException {
-		NodeFact fact=parseFact();
-		//Parse a multiplicative operator. This is done above add ops so that they evaluate first
-		NodeMulop mulop=parseMulop();
-		if (mulop==null)
-	    	return new NodeTerm(fact,null,null);
-		NodeTerm term=parseTerm();
-		term.append(new NodeTerm(fact,mulop,null));
+		NodeFact fact = parseFact();
+		NodeMulop mulop = parseMulop();
+		if (mulop == null)
+			return new NodeTerm(fact, null, null);
+		NodeTerm term = parseTerm();
+		term.append(new NodeTerm(fact, mulop, null));
 		return term;
 	}
 
@@ -142,26 +125,12 @@ public class Parser {
 	}
 
 	private NodeAssn parseAssn() throws SyntaxException {
-		//First part of assignment is the id
-		Token id=curr();
-		//Make sure the token we just got is an id
+		Token id = curr();
 		match("id");
-		//Next up should be an equals sign
 		match("=");
-		//Parse out the expression after the equals sign
-		NodeExpr expr=parseExpr();
-		//Assign the expression to the id and return the new object
-		NodeAssn assn=new NodeAssn(id.lex(),expr);
+		NodeExpr expr = parseExpr();
+		NodeAssn assn = new NodeAssn(id.lex(), expr);
 		return assn;
-	}
-
-	private NodeBoolExpr parseBoolExpr() throws SyntaxException {
-		NodeExpr o1 = parseExpr();
-		NodeRelop relop = parseRelop();
-		NodeExpr o2 = parseExpr();
-
-		NodeBoolExpr boolexpr = new NodeBoolExpr(o1, relop, o2);
-		return boolexpr;
 	}
 
 	private NodeStmt parseStmt() throws SyntaxException {
@@ -182,7 +151,7 @@ public class Parser {
     	
     	if (curr().equals(new Token("if"))) {
     		match("if");
-    		NodeBoolExpr boolexpr = parseBoolExpr();
+    		NodeBoolexpr boolexpr = parseBoolexpr();
     		match("then");
     		NodeStmt tStmt = parseStmt();
     		if (curr().equals(new Token("else"))) {
@@ -197,7 +166,7 @@ public class Parser {
     	
     	if (curr().equals(new Token("while"))) {
     		match("while");
-    		NodeBoolExpr boolexpr = parseBoolExpr();
+    		NodeBoolexpr boolexpr = parseBoolexpr();
     		match("do");
     		NodeStmt stmt = parseStmt();
     		NodeStmtWhile stmtWhile = new NodeStmtWhile(boolexpr, stmt);
@@ -217,8 +186,7 @@ public class Parser {
 		return stmtAssn;
 	}
 
-	public NodeBlock parseBlock() throws SyntaxException
-	{
+	private NodeBlock parseBlock() throws SyntaxException {
 		NodeStmt stmt = parseStmt();
 		NodeBlock nextBlock = null;
 		

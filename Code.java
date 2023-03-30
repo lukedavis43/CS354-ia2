@@ -2,7 +2,7 @@ import java.io.*;
 
 /* Austin Platt */
 /* */ //
-public class Code {
+/* public class Code {
 
 	private final String[] prologue={
 		"#include <stdio.h>",
@@ -32,4 +32,4 @@ public class Code {
 		}
 	}
 
-}
+} */
