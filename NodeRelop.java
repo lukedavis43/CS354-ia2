@@ -1,5 +1,5 @@
 public class NodeRelop extends Node {
-
+    private int pos;
     private String relop;
 
     public NodeRelop(int pos, String relop) {

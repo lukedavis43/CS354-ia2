@@ -3,14 +3,9 @@ public class NodeBlock extends Node {
     private NodeStmt stmt;
 	private NodeBlock block;
 
-	public NodeBlock(NodeStmt st) {
-		stmt = st;
-		block = null;
-	}
-
-	public NodeBlock(NodeStmt st, NodeBlock bl) {
-		stmt = st;
-		block = bl;
+	public NodeBlock(NodeStmt stmt, NodeBlock block) {
+		this.stmt = stmt;
+		this.block = block;
 	}
 
 	/**
@@ -18,12 +13,12 @@ public class NodeBlock extends Node {
 	 * statement denotes another statement to be evaluated.
 	 */
 	public double eval(Environment env) throws EvalException {
-		if (block != null) {
-			stmt.eval(env);
-			return block.eval(env);
-		}
-
-		return stmt.eval(env);
+		double ev = stmt.eval(env);
+        if (block == null){
+            return ev;
+        } else {
+            return block.eval(env);
+        }
 
 	}
 

@@ -1,17 +1,17 @@
-public class NodeBoolExpr extends Node {
+public class NodeBoolExpr extends NodeStmt {
 
-    private NodeExpr o1, o2;
+    private NodeExpr expr1, expr2;
     private NodeRelop relop;
 
-    public NodeBoolExpr(NodeExpr o1, NodeRelop rl, NodeExpr o2) {
-        this.o1 = o1;
-		this.o2 = o2;
-		relop = rl;
+    public NodeBoolExpr(NodeExpr expr1, NodeRelop relop, NodeExpr expr2) {
+        this.expr1 = expr1;
+		this.expr2 = expr2;
+		this.relop = relop;
     }
 
     public double eval(Environment env) throws EvalException {
 		//Evaluate the expression. 7.0 is true 0.0 is false
-	    return relop.op(o1.eval(env), o2.eval(env));
+	    return relop.op(expr1.eval(env), expr2.eval(env));
     }
 
 }
